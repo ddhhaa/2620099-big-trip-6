@@ -1,14 +1,11 @@
 import FilterView from '../view/filter-view.js';
 import SortView from '../view/sort-view.js';
 import PointView from '../view/point-view.js';
-import CreateFormView from '../view/create-form-view.js';
 import EditFormView from '../view/edit-form-view.js';
 import { render } from '../render.js';
 
-const POINT_COUNT = 3;
-
 export default class TripPresenter{
-  constructor({tripContainer}){
+  constructor({tripContainer, pointsModel, offersModel, destinationsModel}){
     this.tripContainer = tripContainer;
     this.filterConteiner = document.querySelector('.trip-controls__filters');
     this.eventsConteiner = document.querySelector('.trip-events');
@@ -16,19 +13,37 @@ export default class TripPresenter{
 
     this.filterComponent = new FilterView();
     this.sortComponent = new SortView();
-    this.createFormComponent = new CreateFormView();
-    this.editFormComponent = new EditFormView();
+
+    this.pointsModel = pointsModel;
+    this.offersModel = offersModel;
+    this.destinationsModel = destinationsModel;
   }
 
   init(){
+    this.points = [...this.pointsModel.getPoints()];
+
     render(this.filterComponent, this.filterConteiner);
-    render(this.editFormComponent,this.eventsConteiner);
-    render(this.createFormComponent, this.eventsConteiner);
     render(this.sortComponent, this.eventsConteiner);
 
-    for (let i = 0; i < POINT_COUNT;i++){
-      const pointComponent = new PointView();
-      render(pointComponent, this.eventsConteiner);
+    for (let i = 0; i < this.points.length;i++){
+      const point = this.points[i];
+
+      render(new PointView({
+        point: point,
+        destination: this.destinationsModel.getDestinationById(this.points[i].destination),
+        typeOffers: this.offersModel.getOffersByType(this.points[i].type)
+      }),
+      this.eventsConteiner);
+
+
+      if (i === 0) {
+        const editForm = new EditFormView({
+          point: point,
+          destinations: this.destinationsModel.getDestinations(),
+          offers: this.offersModel.getOffers()
+        });
+        render(editForm, this.eventsConteiner);
+      }
     }
 
   }
