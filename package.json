@@ -9,8 +9,10 @@
     "start": "webpack serve --mode development --open"
   },
   "devDependencies": {
+    "css-loader": "^7.1.4",
     "eslint": "8.38.0",
     "eslint-config-htmlacademy": "9.0.0",
+    "style-loader": "^4.0.0",
     "webpack-dev-server": "^4.15.0"
   },
   "engines": {
