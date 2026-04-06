@@ -1,4 +1,5 @@
-import { getRandomArrayElement, getRandomPhotos, getRandomDescription } from '../utils.js';
+import { getRandomPhotos, getRandomDescription } from '../utils/tasks.js';
+import { getRandomArrayElement } from '../utils/common.js';
 
 const mockDestinations = [
   {
