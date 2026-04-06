@@ -1,13 +1,10 @@
 import { DESCRIPTION,
   imgPlug
-} from './const';
+} from '../const';
+import dayjs from 'dayjs';
 
 
 const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
-function getRandomArrayElement(items){
-  return items[Math.floor(Math.random() * items.length)];
-}
 
 function getRandomDescription(){
   const sentenceCount = getRandomInteger(3,5) + 3;
@@ -63,11 +60,24 @@ const formatTime = (date) => date.toTimeString().slice(0, 5);
 
 const formatDateTime = (date) => date.toISOString().slice(0, 16);
 
-export { getRandomArrayElement,
-  getRandomInteger,
-  getRandomDescription,
+function isFuturePoint(dueDate) {
+  return dueDate && dayjs().isBefore(dueDate, 'D');
+}
+
+function isPastPoint(dueDate) {
+  return dueDate && dayjs().isAfter(dueDate, 'D');
+}
+
+function isPresentPoint(dueDate){
+  return dueDate && dayjs(dueDate).isSame(dayjs(), 'D');
+}
+
+export {getRandomDescription,
   getRandomPhotos,
   formatTime,
   formatDateTime,
-  calculateDuration
+  calculateDuration,
+  isFuturePoint,
+  isPastPoint,
+  isPresentPoint
 };

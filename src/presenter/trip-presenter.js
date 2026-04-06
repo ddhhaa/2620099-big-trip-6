@@ -24,7 +24,7 @@ export default class TripPresenter {
     this.#eventsContainer = document.querySelector('.trip-events');
 
 
-    this.#filterComponent = new FilterView();
+    // this.#filterComponent = new FilterView();
     this.#sortComponent = new SortView();
 
     this.#pointsModel = pointsModel;
@@ -33,7 +33,7 @@ export default class TripPresenter {
   }
 
   init(){
-    render(this.#filterComponent, this.#filterContainer);
+    // render(this.#filterComponent, this.#filterContainer);
     render(this.#sortComponent, this.#eventsContainer);
 
     this.#points = [...this.#pointsModel.pointsList];

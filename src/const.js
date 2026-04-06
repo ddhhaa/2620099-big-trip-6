@@ -74,4 +74,11 @@ const OFFERS = {
   ]
 };
 
-export { TYPE_POINTS, DESCRIPTION, imgPlug, MONTHS, OFFERS };
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past'
+};
+
+export { TYPE_POINTS, DESCRIPTION, imgPlug, MONTHS, OFFERS, FilterType };
