@@ -71,7 +71,7 @@ export default class PointPresenter {
   }
 
   resetView() {
-    if (this.#mode !== Mode.DEFAULT) {
+    if (this.#mode === Mode.EDITING) {
       this.#replaceFormToCard();
     }
   }
@@ -102,9 +102,9 @@ export default class PointPresenter {
   };
 
   #replaceCardToForm = () =>{
-    this.#handleModeChange();
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
+    this.#handleModeChange(this);
     this.#mode = Mode.EDITING;
   };
 

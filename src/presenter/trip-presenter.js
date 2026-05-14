@@ -2,6 +2,7 @@ import SortView from '../view/sort-view.js';
 import { render } from '../framework/render.js';
 import PointPresenter from './point-presenter.js';
 import NoPointsView from '../view/no-points-view.js';
+import EventListView from '../view/event-list-view.js';
 import {updateItem} from '../utils/common.js';
 
 const POINT_COUNT_PER_STEP = 8;
@@ -20,6 +21,11 @@ export default class TripPresenter {
   #points = [];
   #pointPresenters = new Map();
   #renderedPointCount = POINT_COUNT_PER_STEP;
+
+  #activePresenter = null;
+
+
+  eventListComponent = new EventListView();
 
   constructor({tripContainer, pointsModel, offersModel, destinationsModel}) {
     this.#tripContainer = tripContainer;
@@ -55,14 +61,20 @@ export default class TripPresenter {
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
   };
 
-  #handleModeChange = () => {
-    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  #handleModeChange = (currentPresenter) => {
+    if (this.#activePresenter && this.#activePresenter !== currentPresenter) {
+      this.#activePresenter.resetView();
+    }
+    this.#activePresenter = currentPresenter;
   };
 
   #renderPoints() {
     const points = [...this.#pointsModel.pointsList];
 
+    this.#resetPointsView();
+
     points.forEach((point) => {
+      this.#resetPointsView();
       const pointPresenter = new PointPresenter({
         container: this.#eventsContainer,
         destinationsModel: this.#destinationsModel,
@@ -75,6 +87,10 @@ export default class TripPresenter {
       this.#pointPresenters.set(point.id, pointPresenter);
     });
   }
+
+  #resetPointsView = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
 
   #clearPointsList() {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
