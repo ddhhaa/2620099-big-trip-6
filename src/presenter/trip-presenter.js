@@ -69,14 +69,15 @@ export default class TripPresenter {
   };
 
   #renderPoints() {
+    render(this.eventListComponent, this.#eventsContainer);
     const points = [...this.#pointsModel.pointsList];
+    const pointsListContainer = this.eventListComponent.element;
 
     this.#resetPointsView();
 
     points.forEach((point) => {
-      this.#resetPointsView();
       const pointPresenter = new PointPresenter({
-        container: this.#eventsContainer,
+        container: pointsListContainer,
         destinationsModel: this.#destinationsModel,
         offersModel: this.#offersModel,
         onDataChange: this.#handlePointChange,
