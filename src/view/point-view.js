@@ -114,4 +114,12 @@ export default class PointView extends AbstractView {
     this.#handleArrowClick();
   };
 
+  setArrowClickHandler(callback) {
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', (evt) => {
+        evt.preventDefault();
+        callback();
+      });
+  }
 }
