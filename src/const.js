@@ -81,4 +81,12 @@ const FilterType = {
   PAST: 'past'
 };
 
-export { TYPE_POINTS, DESCRIPTION, imgPlug, MONTHS, OFFERS, FilterType };
+const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer',
+};
+
+export { TYPE_POINTS, DESCRIPTION, imgPlug, MONTHS, OFFERS, FilterType, SortType };

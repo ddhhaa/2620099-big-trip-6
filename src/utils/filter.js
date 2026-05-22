@@ -2,10 +2,10 @@ import { FilterType } from '../const';
 import { isFuturePoint, isPastPoint, isPresentPoint } from './tasks';
 
 const filter = {
-  [FilterType.EVERYTHING]: (tasks) => tasks.filter((task) => !task.isArchive),
-  [FilterType.FUTURE]: (tasks) => tasks.filter((task) => !task.isArchive && isFuturePoint(task.dueDate)),
-  [FilterType.PAST]: (tasks) => tasks.filter((task) => !task.isArchive && isPastPoint(task.dueDate)),
-  [FilterType.PRESENT]: (tasks) => tasks.filter((task) => !task.isArchive && isPresentPoint(task.dueDate)),
+  [FilterType.EVERYTHING]: (points) => points.filter((point) => !point.isArchive),
+  [FilterType.FUTURE]: (points) => points.filter((point) => !point.isArchive && isFuturePoint(point.dueDate)),
+  [FilterType.PAST]: (points) => points.filter((point) => !point.isArchive && isPastPoint(point.dueDate)),
+  [FilterType.PRESENT]: (points) => points.filter((point) => !point.isArchive && isPresentPoint(point.dueDate)),
 };
 
 export {filter};
