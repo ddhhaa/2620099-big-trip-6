@@ -89,4 +89,16 @@ const SortType = {
   OFFER: 'offer',
 };
 
-export { TYPE_POINTS, DESCRIPTION, imgPlug, MONTHS, OFFERS, FilterType, SortType };
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  MINOR: 'minor',
+  MAJOR: 'major',
+  INIT: 'init',
+};
+
+export { TYPE_POINTS, DESCRIPTION, imgPlug, MONTHS, OFFERS, FilterType, SortType, UserAction, UpdateType };

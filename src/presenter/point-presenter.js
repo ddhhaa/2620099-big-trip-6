@@ -1,6 +1,7 @@
 import PointView from '../view/point-view.js';
 import EditFormView from '../view/edit-form-view.js';
 import { render, replace, remove } from '../framework/render.js';
+import { UserAction, UpdateType } from '../const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -50,7 +51,8 @@ export default class PointPresenter {
       destinations: this.#destinationsModel.getDestinations(),
       offers: this.#offersModel.getOffers(),
       onFormSubmit: this.#replaceFormToCard,
-      onArrowClick: this.#replaceFormToCard
+      onArrowClick: this.#replaceFormToCard,
+      onDeleteClick: this.#handleDeleteClick
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
@@ -82,11 +84,13 @@ export default class PointPresenter {
   }
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({
-      ...this.#point,
-      isFavorite: !this.#point.isFavorite,
-    });
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT, UpdateType.PATCH, {
+        ...this.#point,
+        isFavorite: !this.#point.isFavorite,
+      });
   };
+
 
   #replaceFormToCard = () => {
     replace(this.#pointComponent, this.#pointEditComponent);
@@ -110,6 +114,14 @@ export default class PointPresenter {
 
   #handleEditClick = () => {
     this.#replaceCardToForm();
+  };
+
+  #handleDeleteClick = () => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      this.#point,
+    );
   };
 
 }

@@ -1,11 +1,19 @@
-import { FilterType } from '../const';
-import { isFuturePoint, isPastPoint, isPresentPoint } from './tasks';
+import { FilterType } from '../const.js';
+import { isFuturePoint, isPastPoint, isPresentPoint } from './tasks.js';
 
 const filter = {
-  [FilterType.EVERYTHING]: (points) => points.filter((point) => !point.isArchive),
-  [FilterType.FUTURE]: (points) => points.filter((point) => !point.isArchive && isFuturePoint(point.dueDate)),
-  [FilterType.PAST]: (points) => points.filter((point) => !point.isArchive && isPastPoint(point.dueDate)),
-  [FilterType.PRESENT]: (points) => points.filter((point) => !point.isArchive && isPresentPoint(point.dueDate)),
+  [FilterType.EVERYTHING]: (points) => points,
+
+  [FilterType.FUTURE]: (points) =>
+    points.filter((point) => isFuturePoint(point.dateFrom)),
+
+  [FilterType.PAST]: (points) =>
+    points.filter((point) => isPastPoint(point.dateTo)),
+
+  [FilterType.PRESENT]: (points) =>
+    points.filter((point) =>
+      isPresentPoint(point.dateFrom, point.dateTo)
+    ),
 };
 
 export {filter};
