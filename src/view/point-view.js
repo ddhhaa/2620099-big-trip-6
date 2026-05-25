@@ -11,12 +11,12 @@ function createNewPointTemplate(point, destination, typeOffers) {
   }
 
   const {
-    type,
-    dateFrom,
-    dateTo,
-    basePrice,
-    offers: selectedOfferIds,
-    isFavorite
+    type = 'taxi',
+    dateFrom = new Date(),
+    dateTo = new Date(),
+    basePrice = 0,
+    offers: selectedOfferIds = [],
+    isFavorite = false
   } = point;
 
   const fromDate = new Date(dateFrom);
@@ -28,7 +28,7 @@ function createNewPointTemplate(point, destination, typeOffers) {
   const timeToFormated = flatpickr.formatDate(toDate, 'G:i');
 
 
-  const selectedOffers = typeOffers.filter((offer) => selectedOfferIds.includes(offer.id));
+  const selectedOffers = (typeOffers || []).filter((offer) => selectedOfferIds.includes(offer.id));
   const offersTemplate = selectedOffers.length > 0 ? `
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
@@ -51,7 +51,7 @@ function createNewPointTemplate(point, destination, typeOffers) {
               <div class="event__type">
                 <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
               </div>
-              <h3 class="event__title">${type[0].toUpperCase() + type.slice(1)} ${destination.name}</h3>
+              <h3 class="event__title">${type ? type[0].toUpperCase() + type.slice(1) : ''} ${destination?.name || ''}</h3>
               <div class="event__schedule">
                 <p class="event__time">
                   <time class="event__start-time" datetime="${fromDate.toISOString()}">${timeFromFormated }</time>
@@ -83,14 +83,16 @@ export default class PointView extends AbstractView {
   #destination = null;
   #typeOffers = null;
   #handleArrowClick = null;
+  #handleFavoriteClick = null;
 
-  constructor({point, destination, typeOffers, onArrowClick}) {
+  constructor({point, destination, typeOffers, onFavoriteClick, onArrowClick}) {
     super();
 
     this.#point = point;
     this.#destination = destination;
     this.#typeOffers = typeOffers;
     this.#handleArrowClick = onArrowClick;
+    this.#handleFavoriteClick = onFavoriteClick;
     this.#setEventListener();
 
   }
@@ -107,11 +109,19 @@ export default class PointView extends AbstractView {
     this.element
       .querySelector('.event__rollup-btn')
       .addEventListener('click', this.#arrowHandler);
+    this.element
+      .querySelector('.event__favorite-btn')
+      .addEventListener('click', this.#favoriteClickHandler);
   }
 
   #arrowHandler = (evt) => {
     evt.preventDefault();
     this.#handleArrowClick();
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFavoriteClick();
   };
 
   setArrowClickHandler(callback) {

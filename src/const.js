@@ -81,4 +81,24 @@ const FilterType = {
   PAST: 'past'
 };
 
-export { TYPE_POINTS, DESCRIPTION, imgPlug, MONTHS, OFFERS, FilterType };
+const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer',
+};
+
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  MINOR: 'minor',
+  MAJOR: 'major',
+  INIT: 'init',
+};
+
+export { TYPE_POINTS, DESCRIPTION, imgPlug, MONTHS, OFFERS, FilterType, SortType, UserAction, UpdateType };
