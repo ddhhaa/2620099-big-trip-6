@@ -1,5 +1,5 @@
 import SortView from '../view/sort-view.js';
-import { render, remove } from '../framework/render.js';
+import { render, remove, RenderPosition } from '../framework/render.js';
 import PointPresenter from './point-presenter.js';
 import NoPointsView from '../view/no-points-view.js';
 import EventListView from '../view/event-list-view.js';
@@ -7,6 +7,7 @@ import { SortType, UserAction, UpdateType, FilterType } from '../const.js';
 import { sortByDay, sortByPrice, sortByTime } from '../utils/sort.js';
 import { filter } from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
+import LoadingView from '../view/loading-view.js';
 
 const POINT_COUNT_PER_STEP = 8;
 
@@ -18,6 +19,7 @@ export default class TripPresenter {
   #sortComponent = null;
   #eventListComponent = null;
   #noPointComponent = null;
+  #loadingComponent = new LoadingView();
 
   #pointsModel = null;
   #offersModel = null;
@@ -29,6 +31,7 @@ export default class TripPresenter {
   #activePresenter = null;
 
   #renderedPointCount = POINT_COUNT_PER_STEP;
+  #isLoading = true;
 
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
@@ -152,6 +155,11 @@ export default class TripPresenter {
         this.#clearPointsList();
         this.#renderPoints();
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderPoints();
+        break;
     }
   };
 
@@ -160,6 +168,14 @@ export default class TripPresenter {
   };
 
   #renderPoints() {
+    if (this.#isLoading) {
+      this.#eventListComponent = new EventListView();
+      render(this.#eventListComponent, this.#eventsContainer);
+
+      this.#renderLoading();
+      return;
+    }
+
     const points = [...this.points];
 
     if (points.length === 0) {
@@ -196,6 +212,10 @@ export default class TripPresenter {
     render(this.#noPointComponent, this.#eventsContainer);
   }
 
+  #renderLoading() {
+    render(this.#loadingComponent, this.#eventListComponent.element, RenderPosition.AFTERBEGIN);
+  }
+
   #resetPointsView = () => {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
@@ -205,6 +225,7 @@ export default class TripPresenter {
     this.#pointPresenters.clear();
 
     remove(this.#eventListComponent);
+    remove(this.#loadingComponent);
 
     this.#renderedPointCount = POINT_COUNT_PER_STEP;
 

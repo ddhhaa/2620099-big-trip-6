@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
 function createNewPointButtonTemplate() {
-  return '<button class="trip-main__event-add-btn">+ New event</button>';
+  return '';
 }
 
 export default class NewPointButtonView extends AbstractView {
