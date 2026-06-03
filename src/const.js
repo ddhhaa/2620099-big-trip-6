@@ -96,6 +96,7 @@ const UserAction = {
 };
 
 const UpdateType = {
+  PATCH: 'PATCH',
   MINOR: 'minor',
   MAJOR: 'major',
   INIT: 'init',

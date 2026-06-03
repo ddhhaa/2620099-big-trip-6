@@ -4,13 +4,28 @@ import OffersModel from './model/offers-model.js';
 import FilterModel from './model/filter-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
+import PointsApiService from './points-api-service.js';
+import OffersApiService from './offers-api-service.js';
+import DestinationsApiService from './destinations-api-service.js';
+
+const AUTHORIZATION = 'Basic eo0w590iu29889t';
+const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
 
 const siteMainElement = document.querySelector('.trip-main');
-const newPointButtonComponent = document.querySelector('.trip-main__event-add-btn');
+const newEventButton = siteMainElement.querySelector('.trip-main__event-add-btn');
 
-const pointsModel = new PointsModel();
-const offersModel = new OffersModel();
-const destinationsModel = new DestinationsModel();
+const pointsModel = new PointsModel({
+  pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
+});
+
+const offersModel = new OffersModel({
+  offersApiService: new OffersApiService(END_POINT, AUTHORIZATION)
+});
+
+const destinationsModel = new DestinationsModel({
+  destinationsApiService: new DestinationsApiService(END_POINT, AUTHORIZATION)
+});
+
 const filterModel = new FilterModel();
 const tripPresenter = new TripPresenter({
   tripContainer:siteMainElement,
@@ -29,15 +44,25 @@ const filterPresenter = new FilterPresenter({
 
 
 function handleNewPointFormClose() {
-  newPointButtonComponent.disabled = false;
+  newEventButton.disabled = false;
 }
+
+newEventButton.addEventListener('click', handleNewPointButtonClick);
+
+newEventButton.disabled = true;
+
 
 function handleNewPointButtonClick() {
   tripPresenter.createPoint();
-  newPointButtonComponent.disabled = true;
+  newEventButton.disabled = true;
 }
-
-newPointButtonComponent.addEventListener('click', handleNewPointButtonClick);
 
 filterPresenter.init();
 tripPresenter.init();
+Promise.all([
+  pointsModel.init(),
+  offersModel.init(),
+  destinationsModel.init(),
+]).finally(() => {
+  newEventButton.disabled = false;
+});
