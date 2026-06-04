@@ -109,8 +109,14 @@ function createEditFormTemplate(point = {}, destinations = [], offers = []){
             </label>
             <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
           </div>
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
+          <button class="event__save-btn btn btn--blue" type="submit" ${point.isSaving ? 'disabled' : ''}>
+            ${point.isSaving ? 'Saving...' : 'Save'}
+          </button>
+
+          <button class="event__reset-btn" type="button" ${point.isDeleting ? 'disabled' : ''}>
+            ${point.isDeleting ? 'Deleting...' : 'Delete'}
+          </button>
+
           <button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
           </button>
@@ -157,6 +163,9 @@ export default class EditFormView extends AbstractStatefulView {
     this.#handleDeleteClick = onDeleteClick;
     this._setState({
       ...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false
     });
     this.#setEventListeners();
 
@@ -228,7 +237,6 @@ export default class EditFormView extends AbstractStatefulView {
       }
     });
   }
-
 
   #setDestinationChangeHandler() {
     const destinationInput = this.element.querySelector('.event__input--destination');

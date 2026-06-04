@@ -3,6 +3,7 @@ import ApiService from './framework/api-service.js';
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
+  DELETE: 'DELETE'
 };
 
 export default class PointsApiService extends ApiService {
