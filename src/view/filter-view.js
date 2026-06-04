@@ -11,7 +11,7 @@ function createFilterTemplate(filters, currentFilterType){
       type="radio"
       name="trip-filter"
       value="${type}"
-      ${currentFilterType === 0 ? 'checked' : ''}
+      ${type === currentFilterType ? 'checked' : ''}
       ${count === 0 ? 'disabled' : ''}>
       <label class="trip-filters__filter-label" for="filter-${type}">${type[0].toUpperCase() + type.slice(1)}</label>
     </div>

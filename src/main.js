@@ -4,6 +4,7 @@ import OffersModel from './model/offers-model.js';
 import FilterModel from './model/filter-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
+import TripInfoPresenter from './presenter/trip-info-presenter.js';
 import PointsApiService from './points-api-service.js';
 import OffersApiService from './offers-api-service.js';
 import DestinationsApiService from './destinations-api-service.js';
@@ -27,6 +28,14 @@ const destinationsModel = new DestinationsModel({
 });
 
 const filterModel = new FilterModel();
+
+const tripInfoPresenter = new TripInfoPresenter({
+  container: siteMainElement,
+  pointsModel,
+  destinationsModel,
+  offersModel
+});
+
 const tripPresenter = new TripPresenter({
   tripContainer:siteMainElement,
   pointsModel,
@@ -58,6 +67,7 @@ function handleNewPointButtonClick() {
 }
 
 filterPresenter.init();
+tripInfoPresenter.init();
 tripPresenter.init();
 Promise.all([
   pointsModel.init(),
