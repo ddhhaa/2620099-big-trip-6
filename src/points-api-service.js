@@ -22,7 +22,6 @@ export default class PointsApiService extends ApiService {
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
-
     return parsedResponse;
   }
 
